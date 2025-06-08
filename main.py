@@ -9,8 +9,12 @@ def get_video_stats(video_id, api_key):
         data = response.json()
         if 'items' in data and len(data['items']) > 0:
             stats = data['items'][0]['statistics']
-            view_count = stats.get('viewCount')
-            return int(view_count)
+            return {
+                "viewCount": stats.get("viewCount"),
+                "likeCount": stats.get("likeCount"),
+                "favoriteCount": stats.get("favoriteCount"),
+                "commentCount": stats.get("commentCount")
+            }
         else:
             print("No data found for this video.")
             return None
@@ -25,9 +29,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    views = get_video_stats(args.video_id, args.api_key)
-    if views is not None:
-        print(f"View count: {views}")
+    stats = get_video_stats(args.video_id, args.api_key)
+    if stats is not None:
+        print(f"View count: {stats['viewCount']}")
+        print(f"Like count: {stats['likeCount']}")
+        print(f"Favorite count: {stats['favoriteCount']}")
+        print(f"Comment count: {stats['commentCount']}")
+
 
 
 #python main.py --video_id YOUR_VIDEO_ID --api_key YOUR_API_KEY
